@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Introduction | CSKlub Operating System Notes</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="description" content="The Hardware/ Software Interface Class
+Course text book: Computer Systems
+The Big Theme
+
+The hardware/ software interface
+How does the h/w(0s and 1s, processor executing instructions) relate to the s/w (Go programs)?
+Computing is about abstractions (but we can&rsquo;t forget reality)
+What are the abstractions that we use?
+What do YOU need to know about them?
+
+When do they break down and you have to peek under the hood?
+What bugs can they cause and how do you find them?
+
+
+Become a better programmer and begin to understand the important concepts that have evolved in building ever more complex computer systems.
+
+Roadmap
+
+Memory and data
+Integers and floats
+Machine code and C
+x86 assembly
+Procedures and stacks
+Arrays and structs
+Memory and caches
+Processes
+Virtual memory
+Memory allocation
+Java/Go vs C
+
+Little theme 1: Representation
+
+All digital systems represnt everything as 0s and 1s
+
+The o and 1 are really two different voltage ranges in the electronics
+
+
+Everything includes:
+
+Numbers - integers and floating point
+Character - the building blocks of strings
+Instructions - the directives to the CPU that make up a program
+Pointers - addresses of data objects stored away in memory
+
+
+These encodings are stored throughout a computer system
+
+In registers, caches, memories, disks, etc
+
+
+They all need addresses
+
+A way to find them
+Find a new place to put a new item
+Reclain the place in memory when data no longer needed
+
+
+
+Little theme 2: Translation
+
+There is a big gap between how we thing about programs and data and the 0s and 1s of computers
+Need languages to describe what we mean
+Languages need to be translated one step at a time
+
+Word-by-word
+Phrase structure
+Grammar
+
+
+We know Java/Go as a programming language
+
+Have to work our way down to the 0s and 1s of computers
+Try not to lose anything in translation!
+We&rsquo;ll encounter Java/Go byte-code, C language, assembly language, and machine code (for the X86 family of CPU architectues)
+
+
+
+Little theme 3: Control flow
+
+How do computers orchestrate the many things they are doing - seemingly in parallel
+What do we have to keep track of when we call a method, and then another, and then another, and so on
+How do we know what to do upon &ldquo;return&rdquo;
+How do we run multiple user programs and let them share a sigle computer and memory
+">
+    <meta name="generator" content="Hugo 0.149.0">
+    
+    
+    
+      <meta name="robots" content="noindex, nofollow">
+    
+    
+
+    
+<link rel="stylesheet" href="/ananke/css/main.min.css" >
+
+
+
+
+    
+
+
+    
+      
+
+    
+
+    
+
+    
+      <link rel="canonical" href="http://localhost:1313/hardware_software_interface/introduction/">
+    
+
+    <meta property="og:url" content="http://localhost:1313/hardware_software_interface/introduction/">
+  <meta property="og:site_name" content="CSKlub Operating System Notes">
+  <meta property="og:title" content="Introduction">
+  <meta property="og:description" content="The Hardware/ Software Interface Class Course text book: Computer Systems
+The Big Theme The hardware/ software interface How does the h/w(0s and 1s, processor executing instructions) relate to the s/w (Go programs)? Computing is about abstractions (but we can’t forget reality) What are the abstractions that we use? What do YOU need to know about them? When do they break down and you have to peek under the hood? What bugs can they cause and how do you find them? Become a better programmer and begin to understand the important concepts that have evolved in building ever more complex computer systems. Roadmap Memory and data Integers and floats Machine code and C x86 assembly Procedures and stacks Arrays and structs Memory and caches Processes Virtual memory Memory allocation Java/Go vs C Little theme 1: Representation All digital systems represnt everything as 0s and 1s The o and 1 are really two different voltage ranges in the electronics Everything includes: Numbers - integers and floating point Character - the building blocks of strings Instructions - the directives to the CPU that make up a program Pointers - addresses of data objects stored away in memory These encodings are stored throughout a computer system In registers, caches, memories, disks, etc They all need addresses A way to find them Find a new place to put a new item Reclain the place in memory when data no longer needed Little theme 2: Translation There is a big gap between how we thing about programs and data and the 0s and 1s of computers Need languages to describe what we mean Languages need to be translated one step at a time Word-by-word Phrase structure Grammar We know Java/Go as a programming language Have to work our way down to the 0s and 1s of computers Try not to lose anything in translation! We’ll encounter Java/Go byte-code, C language, assembly language, and machine code (for the X86 family of CPU architectues) Little theme 3: Control flow How do computers orchestrate the many things they are doing - seemingly in parallel What do we have to keep track of when we call a method, and then another, and then another, and so on How do we know what to do upon “return” How do we run multiple user programs and let them share a sigle computer and memory">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="hardware_software_interface">
+    <meta property="article:published_time" content="2025-09-02T03:36:13+03:00">
+    <meta property="article:modified_time" content="2025-09-02T03:36:13+03:00">
+
+  <meta itemprop="name" content="Introduction">
+  <meta itemprop="description" content="The Hardware/ Software Interface Class Course text book: Computer Systems
+The Big Theme The hardware/ software interface How does the h/w(0s and 1s, processor executing instructions) relate to the s/w (Go programs)? Computing is about abstractions (but we can’t forget reality) What are the abstractions that we use? What do YOU need to know about them? When do they break down and you have to peek under the hood? What bugs can they cause and how do you find them? Become a better programmer and begin to understand the important concepts that have evolved in building ever more complex computer systems. Roadmap Memory and data Integers and floats Machine code and C x86 assembly Procedures and stacks Arrays and structs Memory and caches Processes Virtual memory Memory allocation Java/Go vs C Little theme 1: Representation All digital systems represnt everything as 0s and 1s The o and 1 are really two different voltage ranges in the electronics Everything includes: Numbers - integers and floating point Character - the building blocks of strings Instructions - the directives to the CPU that make up a program Pointers - addresses of data objects stored away in memory These encodings are stored throughout a computer system In registers, caches, memories, disks, etc They all need addresses A way to find them Find a new place to put a new item Reclain the place in memory when data no longer needed Little theme 2: Translation There is a big gap between how we thing about programs and data and the 0s and 1s of computers Need languages to describe what we mean Languages need to be translated one step at a time Word-by-word Phrase structure Grammar We know Java/Go as a programming language Have to work our way down to the 0s and 1s of computers Try not to lose anything in translation! We’ll encounter Java/Go byte-code, C language, assembly language, and machine code (for the X86 family of CPU architectues) Little theme 3: Control flow How do computers orchestrate the many things they are doing - seemingly in parallel What do we have to keep track of when we call a method, and then another, and then another, and so on How do we know what to do upon “return” How do we run multiple user programs and let them share a sigle computer and memory">
+  <meta itemprop="datePublished" content="2025-09-02T03:36:13+03:00">
+  <meta itemprop="dateModified" content="2025-09-02T03:36:13+03:00">
+  <meta itemprop="wordCount" content="392">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Introduction">
+  <meta name="twitter:description" content="The Hardware/ Software Interface Class Course text book: Computer Systems
+The Big Theme The hardware/ software interface How does the h/w(0s and 1s, processor executing instructions) relate to the s/w (Go programs)? Computing is about abstractions (but we can’t forget reality) What are the abstractions that we use? What do YOU need to know about them? When do they break down and you have to peek under the hood? What bugs can they cause and how do you find them? Become a better programmer and begin to understand the important concepts that have evolved in building ever more complex computer systems. Roadmap Memory and data Integers and floats Machine code and C x86 assembly Procedures and stacks Arrays and structs Memory and caches Processes Virtual memory Memory allocation Java/Go vs C Little theme 1: Representation All digital systems represnt everything as 0s and 1s The o and 1 are really two different voltage ranges in the electronics Everything includes: Numbers - integers and floating point Character - the building blocks of strings Instructions - the directives to the CPU that make up a program Pointers - addresses of data objects stored away in memory These encodings are stored throughout a computer system In registers, caches, memories, disks, etc They all need addresses A way to find them Find a new place to put a new item Reclain the place in memory when data no longer needed Little theme 2: Translation There is a big gap between how we thing about programs and data and the 0s and 1s of computers Need languages to describe what we mean Languages need to be translated one step at a time Word-by-word Phrase structure Grammar We know Java/Go as a programming language Have to work our way down to the 0s and 1s of computers Try not to lose anything in translation! We’ll encounter Java/Go byte-code, C language, assembly language, and machine code (for the X86 family of CPU architectues) Little theme 3: Control flow How do computers orchestrate the many things they are doing - seemingly in parallel What do we have to keep track of when we call a method, and then another, and then another, and so on How do we know what to do upon “return” How do we run multiple user programs and let them share a sigle computer and memory">
+
+	
+  </head><body class="ma0 avenir bg-near-white development">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l center items-center justify-between">
+    <a href="/" class="f3 fw2 hover-white white-90 dib no-underline">
+      
+        CSKlub Operating System Notes
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+      <div class="ananke-socials"></div>
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  
+  <article class="flex-l mw8 center ph3 flex-wrap justify-between">
+    <header class="mt4 w-100">
+      <aside class="instapaper_ignoref b helvetica tracked ttu">
+          
+        Hardware_software_interfaces
+      </aside><div id="sharing" class="mt3 ananke-socials"></div>
+<h1 class="f1 athelas mt3 mb1">Introduction</h1>
+      
+      
+      
+      <time class="f6 mv4 dib tracked" datetime="2025-09-02T03:36:13+03:00">September 2, 2025</time>
+      
+
+      
+      
+    </header>
+    <div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-two-thirds-l"><h1 id="the-hardware-software-interface-class">The Hardware/ Software Interface Class</h1>
+<p><a href="www.cs.sfu.ca/~ashriram/Courses/CS295/assets/books/CSAPP_2016.pdf">Course text book: Computer Systems</a></p>
+<h2 id="the-big-theme">The Big Theme</h2>
+<ul>
+<li>The hardware/ software interface</li>
+<li>How does the h/w(0s and 1s, processor executing instructions) relate to the s/w (Go programs)?</li>
+<li>Computing is about abstractions (but we can&rsquo;t forget reality)</li>
+<li>What are the abstractions that we use?</li>
+<li>What do YOU need to know about them?
+<ul>
+<li>When do they break down and you have to peek under the hood?</li>
+<li>What bugs can they cause and how do you find them?</li>
+</ul>
+</li>
+<li>Become a better programmer and begin to understand the important concepts that have evolved in building ever more complex computer systems.</li>
+</ul>
+<h3 id="roadmap">Roadmap</h3>
+<ol>
+<li>Memory and data</li>
+<li>Integers and floats</li>
+<li>Machine code and C</li>
+<li>x86 assembly</li>
+<li>Procedures and stacks</li>
+<li>Arrays and structs</li>
+<li>Memory and caches</li>
+<li>Processes</li>
+<li>Virtual memory</li>
+<li>Memory allocation</li>
+<li>Java/Go vs C</li>
+</ol>
+<h3 id="little-theme-1-representation">Little theme 1: Representation</h3>
+<ul>
+<li>All digital systems represnt everything as 0s and 1s
+<ul>
+<li>The o and 1 are really two different voltage ranges in the electronics</li>
+</ul>
+</li>
+<li>Everything includes:
+<ul>
+<li>Numbers - integers and floating point</li>
+<li>Character - the building blocks of strings</li>
+<li>Instructions - the directives to the CPU that make up a program</li>
+<li>Pointers - addresses of data objects stored away in memory</li>
+</ul>
+</li>
+<li>These encodings are stored throughout a computer system
+<ul>
+<li>In registers, caches, memories, disks, etc</li>
+</ul>
+</li>
+<li>They all need addresses
+<ul>
+<li>A way to find them</li>
+<li>Find a new place to put a new item</li>
+<li>Reclain the place in memory when data no longer needed</li>
+</ul>
+</li>
+</ul>
+<h2 id="little-theme-2-translation">Little theme 2: Translation</h2>
+<ul>
+<li>There is a big gap between how we thing about programs and data and the 0s and 1s of computers</li>
+<li>Need languages to describe what we mean</li>
+<li>Languages need to be translated one step at a time
+<ul>
+<li>Word-by-word</li>
+<li>Phrase structure</li>
+<li>Grammar</li>
+</ul>
+</li>
+<li>We know Java/Go as a programming language
+<ul>
+<li>Have to work our way down to the 0s and 1s of computers</li>
+<li>Try not to lose anything in translation!</li>
+<li>We&rsquo;ll encounter Java/Go byte-code, C language, assembly language, and machine code (for the X86 family of CPU architectues)</li>
+</ul>
+</li>
+</ul>
+<h2 id="little-theme-3-control-flow">Little theme 3: Control flow</h2>
+<ul>
+<li>How do computers orchestrate the many things they are doing - seemingly in parallel</li>
+<li>What do we have to keep track of when we call a method, and then another, and then another, and so on</li>
+<li>How do we know what to do upon &ldquo;return&rdquo;</li>
+<li>How do we run multiple user programs and let them share a sigle computer and memory</li>
+</ul>
+<ul class="pa0">
+  
+</ul>
+<div class="mt6 instapaper_ignoref">
+      
+      
+      </div>
+    </div>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white white-70 dn dib-ns pv2 ph3 no-underline" href="http://localhost:1313/" >
+    &copy;  CSKlub Operating System Notes 2025 
+  </a>
+    <div><div class="ananke-socials"></div>
+</div>
+  </div>
+</footer>
+
+  </body>
+</html>

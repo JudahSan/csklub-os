@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>CSKlub Operating System Notes</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="description" content="">
+    <meta name="generator" content="Hugo 0.149.0">
+    
+    
+    
+      <meta name="robots" content="noindex, nofollow">
+    
+    
+
+    
+<link rel="stylesheet" href="/ananke/css/main.min.css" >
+
+
+
+
+    
+
+
+    
+      
+
+    
+
+    
+    
+      <link href="/index.xml" rel="alternate" type="application/rss+xml" title="CSKlub Operating System Notes" />
+      <link href="/index.xml" rel="feed" type="application/rss+xml" title="CSKlub Operating System Notes" />
+      
+    
+
+    
+      <link rel="canonical" href="http://localhost:1313/">
+    
+
+    <meta property="og:url" content="http://localhost:1313/">
+  <meta property="og:site_name" content="CSKlub Operating System Notes">
+  <meta property="og:title" content="CSKlub Operating System Notes">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="website">
+
+  <meta itemprop="name" content="CSKlub Operating System Notes">
+  <meta itemprop="datePublished" content="2025-09-02T03:36:13+03:00">
+  <meta itemprop="dateModified" content="2025-09-02T03:36:13+03:00">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="CSKlub Operating System Notes">
+
+	
+  </head><body class="ma0 avenir bg-near-white development">
+
+    
+
+  <header>
+    <div class="pb3-m pb6-l bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l center items-center justify-between">
+    <a href="/" class="f3 fw2 hover-white white-90 dib no-underline">
+      
+        CSKlub Operating System Notes
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+      <div class="ananke-socials"></div>
+
+    </div>
+  </div>
+</nav>
+
+      <div class="tc-l pv3 ph3 ph4-ns">
+        <h1 class="f2 f-subheadline-l fw2 light-silver mb0 lh-title">
+          CSKlub Operating System Notes
+        </h1>
+        
+      </div>
+    </div>
+  </header>
+
+
+    <main class="pb7" role="main">
+      
+  <article class="cf ph3 ph5-l pv3 pv4-l f4 tc-l center measure-wide lh-copy nested-links mid-gray">
+    
+  </article>
+
+  
+  
+  
+  
+  
+
+  
+    <div class="pa3 pa4-ns w-100 w-70-ns center">
+      
+
+      <section class="w-100 mw8">
+        
+        
+          <div class="w-100 mb4 relative">
+            
+<article class="bb b--black-10">
+  <div class="db pv4 ph3 ph0-l dark-gray no-underline">
+    <div class="flex-column flex-row-ns flex">
+      
+      <div class="blah w-100">
+        <h1 class="f3 fw1 athelas mt0 lh-title">
+          <a href="/hardware_software_interface/introduction/" class="color-inherit dim link">
+            Introduction
+            </a>
+        </h1>
+        <div class="f6 f5-l lh-copy nested-copy-line-height nested-links">
+          <h1 id="the-hardware-software-interface-class">The Hardware/ Software Interface Class</h1>
+<p><a href="www.cs.sfu.ca/~ashriram/Courses/CS295/assets/books/CSAPP_2016.pdf">Course text book: Computer Systems</a></p>
+<h2 id="the-big-theme">The Big Theme</h2>
+<ul>
+<li>The hardware/ software interface</li>
+<li>How does the h/w(0s and 1s, processor executing instructions) relate to the s/w (Go programs)?</li>
+<li>Computing is about abstractions (but we can&rsquo;t forget reality)</li>
+<li>What are the abstractions that we use?</li>
+<li>What do YOU need to know about them?
+<ul>
+<li>When do they break down and you have to peek under the hood?</li>
+<li>What bugs can they cause and how do you find them?</li>
+</ul>
+</li>
+<li>Become a better programmer and begin to understand the important concepts that have evolved in building ever more complex computer systems.</li>
+</ul>
+<h3 id="roadmap">Roadmap</h3>
+<ol>
+<li>Memory and data</li>
+<li>Integers and floats</li>
+<li>Machine code and C</li>
+<li>x86 assembly</li>
+<li>Procedures and stacks</li>
+<li>Arrays and structs</li>
+<li>Memory and caches</li>
+<li>Processes</li>
+<li>Virtual memory</li>
+<li>Memory allocation</li>
+<li>Java/Go vs C</li>
+</ol>
+<h3 id="little-theme-1-representation">Little theme 1: Representation</h3>
+<ul>
+<li>All digital systems represnt everything as 0s and 1s
+<ul>
+<li>The o and 1 are really two different voltage ranges in the electronics</li>
+</ul>
+</li>
+<li>Everything includes:
+<ul>
+<li>Numbers - integers and floating point</li>
+<li>Character - the building blocks of strings</li>
+<li>Instructions - the directives to the CPU that make up a program</li>
+<li>Pointers - addresses of data objects stored away in memory</li>
+</ul>
+</li>
+<li>These encodings are stored throughout a computer system
+<ul>
+<li>In registers, caches, memories, disks, etc</li>
+</ul>
+</li>
+<li>They all need addresses
+<ul>
+<li>A way to find them</li>
+<li>Find a new place to put a new item</li>
+<li>Reclain the place in memory when data no longer needed</li>
+</ul>
+</li>
+</ul>
+<h2 id="little-theme-2-translation">Little theme 2: Translation</h2>
+<ul>
+<li>There is a big gap between how we thing about programs and data and the 0s and 1s of computers</li>
+<li>Need languages to describe what we mean</li>
+<li>Languages need to be translated one step at a time
+<ul>
+<li>Word-by-word</li>
+<li>Phrase structure</li>
+<li>Grammar</li>
+</ul>
+</li>
+<li>We know Java/Go as a programming language
+<ul>
+<li>Have to work our way down to the 0s and 1s of computers</li>
+<li>Try not to lose anything in translation!</li>
+<li>We&rsquo;ll encounter Java/Go byte-code, C language, assembly language, and machine code (for the X86 family of CPU architectues)</li>
+</ul>
+</li>
+</ul>
+<h2 id="little-theme-3-control-flow">Little theme 3: Control flow</h2>
+<ul>
+<li>How do computers orchestrate the many things they are doing - seemingly in parallel</li>
+<li>What do we have to keep track of when we call a method, and then another, and then another, and so on</li>
+<li>How do we know what to do upon &ldquo;return&rdquo;</li>
+<li>How do we run multiple user programs and let them share a sigle computer and memory</li>
+</ul>
+        </div>
+        <a href="/hardware_software_interface/introduction/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
+      </div>
+    </div>
+  </div>
+</article>
+
+          </div>
+        
+      </section>
+
+      
+
+    </div>
+  
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white white-70 dn dib-ns pv2 ph3 no-underline" href="http://localhost:1313/" >
+    &copy;  CSKlub Operating System Notes 2025 
+  </a>
+    <div><div class="ananke-socials"></div>
+</div>
+  </div>
+</footer>
+
+  </body>
+</html>

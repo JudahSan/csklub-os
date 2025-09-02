@@ -1,0 +1,19 @@
+.vscode
+# Hugo's output directory
+/public/
+
+# Hugo's cache directory
+/resources/_gen/
+/resources/_gen/images/
+
+# Hugo's temporary lock file
+/.hugo_build.lock
+
+# macOS-specific files
+.DS_Store
+
+# Common editor and temp files
+.vscode/
+Thumbs.db
+*.swp
+*~
