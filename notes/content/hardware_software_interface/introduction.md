@@ -2,11 +2,12 @@
 date = '2025-09-02T03:36:13+03:00'
 draft = false
 title = 'Introduction'
+weight = 10
 +++
 
 # The Hardware/ Software Interface Class
 
-[Course text book: Computer Systems](www.cs.sfu.ca/~ashriram/Courses/CS295/assets/books/CSAPP_2016.pdf)
+[Course text book: Computer Systems](https://www.cs.sfu.ca/~ashriram/Courses/CS295/assets/books/CSAPP_2016.pdf)
 
 ## The Big Theme
 

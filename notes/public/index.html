@@ -7,7 +7,7 @@
     <title>CSKlub Operating System Notes</title>
     <meta name="viewport" content="width=device-width,minimum-scale=1">
     <meta name="description" content="">
-    <meta name="generator" content="Hugo 0.149.0">
+    <meta name="generator" content="Hugo 0.150.0">
     
     
     
@@ -47,8 +47,8 @@
   <meta property="og:type" content="website">
 
   <meta itemprop="name" content="CSKlub Operating System Notes">
-  <meta itemprop="datePublished" content="2025-09-02T03:36:13+03:00">
-  <meta itemprop="dateModified" content="2025-09-02T03:36:13+03:00">
+  <meta itemprop="datePublished" content="2025-09-17T03:36:13+03:00">
+  <meta itemprop="dateModified" content="2025-09-17T03:36:13+03:00">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="CSKlub Operating System Notes">
 
@@ -119,7 +119,7 @@
         </h1>
         <div class="f6 f5-l lh-copy nested-copy-line-height nested-links">
           <h1 id="the-hardware-software-interface-class">The Hardware/ Software Interface Class</h1>
-<p><a href="www.cs.sfu.ca/~ashriram/Courses/CS295/assets/books/CSAPP_2016.pdf">Course text book: Computer Systems</a></p>
+<p><a href="https://www.cs.sfu.ca/~ashriram/Courses/CS295/assets/books/CSAPP_2016.pdf">Course text book: Computer Systems</a></p>
 <h2 id="the-big-theme">The Big Theme</h2>
 <ul>
 <li>The hardware/ software interface</li>
@@ -204,6 +204,211 @@
 </ul>
         </div>
         <a href="/hardware_software_interface/introduction/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
+      </div>
+    </div>
+  </div>
+</article>
+
+          </div>
+        
+          <div class="w-100 mb4 relative">
+            
+<article class="bb b--black-10">
+  <div class="db pv4 ph3 ph0-l dark-gray no-underline">
+    <div class="flex-column flex-row-ns flex">
+      
+      <div class="blah w-100">
+        <h1 class="f3 fw1 athelas mt0 lh-title">
+          <a href="/hardware_software_interface/architecture/" class="color-inherit dim link">
+            Architecture
+            </a>
+        </h1>
+        <div class="f6 f5-l lh-copy nested-copy-line-height nested-links">
+          <h1 id="basics-of-architecture-machine-programming">Basics of architecture, machine programming</h1>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> What is an ISA (Instruction Set Architecture)?</li>
+<li><input checked="" disabled="" type="checkbox"> History of Intel processors and architectures</li>
+<li><input checked="" disabled="" type="checkbox"> C, assembly, machine code</li>
+<li><input checked="" disabled="" type="checkbox"> x86 basics: registers</li>
+</ul>
+<h2 id="translation-impacts-performance">Translation Impacts Performance</h2>
+<p><img src="/images/prog_lifetime.png" alt="program lifetime"></p>
+<blockquote>
+<p>Program lifetime illustration</p></blockquote>
+<ul>
+<li>The time required to execute a program depends on:
+<ul>
+<li>The program.</li>
+<li>The compiler: what set of assember instructions it translates the program into.</li>
+<li>The instruction set architecture (ISA): what set of instructions it makes available to the compiler.</li>
+<li>The hardware implementation: how much time it takes to execute an instruction.</li>
+</ul>
+</li>
+</ul>
+<h3 id="instruction-set-architectures">Instruction Set Architectures</h3>
+<ul>
+<li>The ISA defines:
+<ul>
+<li>The system&rsquo;s state (e.g. registers, memory, program counter)</li>
+<li>The instructions the CPU can execute</li>
+<li>The effect that each of these instructions will have on the system state</li>
+</ul>
+</li>
+</ul>
+<h3 id="general-isa-design-decisions">General ISA Design Decisions</h3>
+<ol>
+<li>Instructions
+<ul>
+<li>What instructions are available? What do they do?</li>
+<li>How are they encoded? (eg 32bits, 64bits)</li>
+</ul>
+</li>
+<li>Registers
+<ul>
+<li>How many registers are there?</li>
+<li>How wide are they?</li>
+</ul>
+</li>
+<li>Memory(addressing modes)
+<ul>
+<li>How do you specify a memory location?</li>
+</ul>
+</li>
+</ol>
+<h3 id="x86">x86</h3>
+<ul>
+<li><strong>Processors that implement the x86 ISA completely dominate the server, desktop and laptop markets</strong></li>
+<li><strong>Evolutionary design</strong>
+<ul>
+<li>Backwards compatibility up until 8086, introduced in 1978</li>
+<li>Added more features as time goes on</li>
+</ul>
+</li>
+<li><strong>Complex instruction set computer (CISC)</strong>
+<ul>
+<li>Many different instructions with many different formats
+<ul>
+<li>But, only small subset encountered with Linux programs</li>
+</ul>
+</li>
+<li>(as opposed to Reduced Instruction Set Computers (RISC), which use simpler instructions)</li>
+</ul>
+</li>
+</ul>
+<h3 id="intel-x86-evolution-milestones">Intel x86 Evolution: Milestones</h3>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: center">Name</th>
+          <th style="text-align: center">Date</th>
+          <th style="text-align: center">Transistors</th>
+          <th style="text-align: right">MHz</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: center">8086</td>
+          <td style="text-align: center">1978</td>
+          <td style="text-align: center">29k</td>
+          <td style="text-align: right">5-10</td>
+      </tr>
+  </tbody>
+</table>
+<ul>
+<li>First 16-bit processor. Basis for IBM PC &amp; DOS</li>
+<li>1MB address space</li>
+</ul>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Name</th>
+          <th style="text-align: center">Date</th>
+          <th style="text-align: center">Transistors</th>
+          <th style="text-align: right">MHz</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">386</td>
+          <td style="text-align: center">1985</td>
+          <td style="text-align: center">275k</td>
+          <td style="text-align: right">16-33</td>
+      </tr>
+  </tbody>
+</table>
+<ul>
+<li>First 32 bit processor, referred to as IA32</li>
+<li>Added &ldquo;flat addressing&rdquo;</li>
+<li>Capable of running Unix</li>
+<li>32-bit Linux/gcc targets i386 by default</li>
+</ul>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Name</th>
+          <th style="text-align: center">Date</th>
+          <th style="text-align: center">Transistors</th>
+          <th style="text-align: right">MHz</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">Pentium 4F</td>
+          <td style="text-align: center">2005</td>
+          <td style="text-align: center">230M</td>
+          <td style="text-align: right">2800-3800</td>
+      </tr>
+  </tbody>
+</table>
+<ul>
+<li>First 64-bit Intel x86 processor, referred to as x86-64</li>
+</ul>
+<h3 id="intel-x86-processors">Intel x86 Processors</h3>
+<table>
+  <thead>
+      <tr>
+          <th>Machine Evolution</th>
+          <th></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>486</td>
+          <td>1989</td>
+      </tr>
+      <tr>
+          <td>Pentium</td>
+          <td>1993</td>
+      </tr>
+      <tr>
+          <td>Pentium/MMX</td>
+          <td>1997</td>
+      </tr>
+      <tr>
+          <td>PentiumPro</td>
+          <td>1995</td>
+      </tr>
+      <tr>
+          <td>Pentium III</td>
+          <td>1999</td>
+      </tr>
+      <tr>
+          <td>Pentium 4</td>
+          <td>2001</td>
+      </tr>
+      <tr>
+          <td>Core 2 Duo</td>
+          <td>2006</td>
+      </tr>
+      <tr>
+          <td>Core i7</td>
+          <td>2008</td>
+      </tr>
+  </tbody>
+</table>
+<p><img src="/images/i7.png" alt="Intel Core i7"></p>
+        </div>
+        <a href="/hardware_software_interface/architecture/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
       </div>
     </div>
   </div>
