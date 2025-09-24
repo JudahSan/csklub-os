@@ -17,3 +17,9 @@
 Thumbs.db
 *.swp
 *~
+
+# Ignore build artifacts
+*.o
+*.out
+*.exe
+code
