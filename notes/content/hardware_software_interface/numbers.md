@@ -130,3 +130,157 @@ $$
 
 ### Signed Integers
 
+- Simplified YT explanation: [video](https://www.youtube.com/watch?v=zMX2WERv74k)
+
+- Let's do the natural thing for the positives
+  - They correspond to the unsigned integers of the same value
+    - Example (8 bits): 0x00 = 0, 0x01 = 1, ..., 0x7f = 127
+- But, we need to let about half of them be negative
+  - Use the high order bit to indicate *negative*: call it the "sign bit"
+    - Call this a "sign-and-magnitude" representation
+  - Examples (8 bits):
+    - $$0x00 = 00000000_2$$ is non-negative, because the sign bit is 0
+    - $$0x7F = 01111111_2$$ is non-negative
+    - $$0x85 = 10000101_2$$ is negative
+    - $$0x80 = 10000000_2$$ is negative
+
+### Sign-and-Magnitude Negatives
+
+- How should we represent **-1** in binary?
+  - Sign-and-magnitude: $$10000001_2$$
+    - Use the Most Significant Bit (MSB) for + or -, and the other bits to give magnitude
+    - (Unfortunate side effect: there are two representations of 0!)
+    - Another problem: math is cumbersome
+
+![Number wheel](/images/number_wheel.png)
+
+ - Example: 
+
+$$4 - 3 != 4 + (-3)$$
+
+$$4 = 0100$$
+$$3 = 0011$$
+$$-3=1011$$
+
+$$4 - 3 = 0100 + 0011 = 0001 -> 1$$ 
+$$4 + (-3) = 0100 + 1011 = 1111 -> 7$$  
+
+### Two's Complement Negatives
+
+- **How should we represent -1 in binary?**
+  - Rather than a sign bit, let Most Significant Bit(MSB) have same value, but negative weight
+    - W-bit word: Bits $0, 1, ..., W-2$ add $2^0, 2^1, ..., 2^(W-2)$ to value of integer when set, but bit W-1 adds $-2^(W-1)$ when set
+    - e.g. unsigned 
+  
+        $$
+        1010_{2} = 1 \cdot 2^{3} + 0 \cdot 2^{2} + 1 \cdot 2^{1} + 0 \cdot 2^{0} = 10_{10}
+        $$
+
+    - signed
+  
+        $$
+        1010_{2} = -1 \cdot 2^{3} + 0 \cdot 2^{2} + 1 \cdot 2^{1} + 0 \cdot 2^{0} = -6_{10}
+        $$
+
+  - So -1 represented as $1111_2$; all negatives integers still has Most Significant Bit (MSB) = 1
+  - Advantages of two's complement: only one zero, simple arithmetic
+  - To get negative representation of any integer, take bitwise complement and then add one
+    $$~x + 1 = -x$$
+
+### Two's Complement Arithmetic
+
+- The same addition procedure works for both unsigned and two's complement integer
+  - Simplifies hardware: only one adder needed
+  - Algorithm: simple addition, discard the highest carry bit
+    - Called "modular" addition: result is sum module $2^W$
+  - Examples
+
+    **Example 1: 4 + 3**
+
+    | Decimal | Binary |
+    |---------|--------|
+    | 4       | 0100   |
+    | +3      | 0011   |
+    | =7      | 0111   |
+
+    ---
+
+    **Example 2: 4 + (–3)**
+
+    | Decimal | Binary |
+    |---------|--------|
+    | 4       | 0100   |
+    | –3      | 1101   |
+    | =1      | 10001  |
+    |         | drop carry → 0001 |
+
+    ---
+
+    **Example 3: –4 + 3**
+
+    | Decimal | Binary |
+    |---------|--------|
+    | –4      | 1100   |
+    | +3      | 0011   |
+    | =–1     | 1111   |
+    |         | MSB = 1 → negative → invert(1111) = 0000 → +1 = 0001 → –1 |
+
+### Two's Complement
+
+- Why does it work?
+  - Put another way: given the bit representation of a positive integer, we want the negative bit representation to always sum to 0 (ignoring the carry-out bit) when added to the positive representation.
+  - This turns out to be the *bitwise complement plus one*
+    - What should the 8-bit representation of -1 be? $00000001 + 11111111$ = 1 $00000000$ (we want whichever bit string gives the right result)
+
+### Unsigned & Signed Numeric Values
+
+|   X  |       Unsigned      |       Signed        |
+|------|---------------------|---------------------|
+|0000  |          0          |          0          |
+|0001  |          1          |          1          |
+|0010  |          2          |          2          |
+|0011  |          3          |          3          |
+|0100  |          4          |          4          |
+|0101  |          5          |          5          |
+|0110  |          6          |          6          |
+|0111  |          7          |          7          |
+|1000  |          8          |         -8          |
+|1001  |          9          |         -7          |
+|1010  |         10          |         -6          |
+|1011  |         11          |         -5          |
+|1100  |         12          |         -4          |
+|1101  |         13          |         -3          |
+|1110  |         14          |         -2          |
+|1111  |         15          |         -1          |
+
+- Both signed and unsigned integers have limits
+  - If you compute a number that is too big, you wrap: 6 + 4 = ? 15U +2U = ?
+  - If you compute a number that is too small, you wrap: -7 - 3 ? 0U - 2U = ?
+- The CPU may be capable of "throwing an exception" for overflow on signed values
+  - But it won't for unsigned
+- C and Java just cruise along silently when overflow occurs...
+
+### Visualizations
+
+- Same W bits interpreted as signed vs unsigned:
+
+![Same W bits visuals](/images/same_w_bits.png)
+
+- Two's complement (signed) addition: x and y are W bits wide
+
+![Two's complement (signed)](/images/2s_complement_visual.png)
+
+### Values To Remember
+
+- Unsigned Values
+  - UMin = 0
+    - 000...0
+  - UMax = $2^W -1$
+    - 111...1
+- Two's Complement Values
+  - TMin = $-2^{W-1}$
+    - 100...0
+  - TMax = $2^{W-1}-1$
+    - 011...1
+  - Negative 1
+    - 111...1 0xFFFFFFFF (32 bits)
