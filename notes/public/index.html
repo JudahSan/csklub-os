@@ -47,12 +47,26 @@
   <meta property="og:type" content="website">
 
   <meta itemprop="name" content="CSKlub Operating System Notes">
-  <meta itemprop="datePublished" content="2025-09-17T03:36:13+03:00">
-  <meta itemprop="dateModified" content="2025-09-17T03:36:13+03:00">
+  <meta itemprop="datePublished" content="2025-09-24T03:36:13+03:00">
+  <meta itemprop="dateModified" content="2025-09-24T03:36:13+03:00">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="CSKlub Operating System Notes">
 
-	
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: "$$", right: "$$", display: true},
+        {left: "$", right: "$", display: false}
+      ]
+    });
+  });
+</script>
+
+
   </head><body class="ma0 avenir bg-near-white development">
 
     
@@ -409,6 +423,71 @@
 <p><img src="/images/i7.png" alt="Intel Core i7"></p>
         </div>
         <a href="/hardware_software_interface/architecture/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
+      </div>
+    </div>
+  </div>
+</article>
+
+          </div>
+        
+          <div class="w-100 mb4 relative">
+            
+<article class="bb b--black-10">
+  <div class="db pv4 ph3 ph0-l dark-gray no-underline">
+    <div class="flex-column flex-row-ns flex">
+      
+      <div class="blah w-100">
+        <h1 class="f3 fw1 athelas mt0 lh-title">
+          <a href="/hardware_software_interface/numbers/" class="color-inherit dim link">
+            Numbers
+            </a>
+        </h1>
+        <div class="f6 f5-l lh-copy nested-copy-line-height nested-links">
+          <h1 id="integer--floating-point-numbers">Integer &amp; Floating Point Numbers</h1>
+<ul>
+<li>
+<p>Representation of integers: unsigned and signed</p>
+</li>
+<li>
+<p>Unsigned and signed integers in C</p>
+</li>
+<li>
+<p>Arithmetic and shifting</p>
+</li>
+<li>
+<p>Sign extension</p>
+</li>
+<li>
+<p>Background: fractional binary numbers</p>
+</li>
+<li>
+<p>IEEE floating-point standard</p>
+</li>
+<li>
+<p>Floating-point operations and rounding</p>
+</li>
+<li>
+<p>Floating-point in C</p>
+</li>
+</ul>
+<h3 id="encoding">Encoding</h3>
+<ul>
+<li>How about encoding a standard deck of playing cards?</li>
+<li>52 cards in 4 suits
+<ul>
+<li>How do we encode suits, face cards?</li>
+</ul>
+</li>
+<li>What operations do we want to make easy to implement?
+<ul>
+<li>Which is the higher value card?</li>
+<li>Are they the same suit?</li>
+</ul>
+</li>
+</ul>
+<p><strong>Two possible representation</strong></p>
+        </div>
+        <a href="/hardware_software_interface/numbers/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
       </div>
     </div>
   </div>
