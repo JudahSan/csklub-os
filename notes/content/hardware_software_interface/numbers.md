@@ -106,11 +106,11 @@ bool greaterValue(char card1, char card2) {
 63 + 8 = 71
 
 |        | 6 | 5 | 4 | 3 | 2 | 1 | 0 |
-|--------|---|---|---|---|---|---|---|
+|:--------|:---:|:---:|:---:|:---:|:---:|:---:|---:|
 | carry  | 1 | 1 | 1 | 0 | 0 | 0 | 0 |
 | 63     | 0 | 1 | 1 | 1 | 1 | 1 | 1 |
 | + 8    | 0 | 0 | 0 | 1 | 0 | 0 | 0 |
-|--------|---|---|---|---|---|--a-|---|
+|--------|---|---|---|---|---|---|---|
 | sum    | 1 | 0 | 0 | 0 | 1 | 1 | 1 |
 
 $$
@@ -219,7 +219,7 @@ $$4 + (-3) = 0100 + 1011 = 1111 -> 7$$
     **Example 3: –4 + 3**
 
     | Decimal | Binary |
-    |---------|--------|
+    |:---------|--------:|
     | –4      | 1100   |
     | +3      | 0011   |
     | =–1     | 1111   |
@@ -235,7 +235,7 @@ $$4 + (-3) = 0100 + 1011 = 1111 -> 7$$
 ### Unsigned & Signed Numeric Values
 
 |   X  |       Unsigned      |       Signed        |
-|------|---------------------|---------------------|
+|:------|:---------------------:|---------------------:|
 |0000  |          0          |          0          |
 |0001  |          1          |          1          |
 |0010  |          2          |          2          |
@@ -284,3 +284,131 @@ $$4 + (-3) = 0100 + 1011 = 1111 -> 7$$
     - 011...1
   - Negative 1
     - 111...1 0xFFFFFFFF (32 bits)
+
+## Unsigned and signed Integers in C
+
+|      | `8`   | `16`     | `32`          | `64`                      |
+|:------|:-----:|:--------:|:-------------:|-------------------------:|
+| `UMax` | _255_ | `65,535` | _4,294,967,295_ | `18,446,744,073,709,551,615` |
+| `TMax` | _127_ | `32,767` | _2,147,483,647_ | `9,223,372,036,854,775,807`  |
+| `TMin` | _-128_ | `-32,768` | _-2,147,483,648_ | `-9,223,372,036,854,775,808` |
+
+
+**Observations**
+
+- $|TMin| = TMax + 1$
+  - Asymmetric range
+- $UMax = 2 * TMax + 1$
+
+**C Programming**
+
+- `#include <limits.h>`
+- Declares constants, e.g:
+  - ULONG_MAX
+  - LONG_MAX
+  - LONG_MIN
+- Values are platform specific
+- See: `/usr/include/limits.h` on Linux
+
+### Signed vs Unsigned in C
+
+**Casting**
+
+```c
+int tx, ty;
+unsigned ux, uy;
+```
+
+- Explicit casting between signed and unsigned:
+
+```c
+tx = (int) ux;
+uy = (unsigned) ty;
+```
+
+- Implicit casting also occurs via assignments and function calls:
+
+```c
+tx = ux;
+uy = ty;
+```
+
+ - The gcc flag -Wsign-conversion produces warning for implicit casts, but -Wall does not.
+- How does casting beteen signed and unsigned work - what values are going to be produced?
+  - Bits are unchanged, just interpreted differently.
+
+### Casting Surprises
+
+- Expression Evaluation
+  - If you mix unsigned and signed in a single expression, then signed values implicitly cast to unsigned.
+  - Including comparison operators `<.>,==,<=,>=`
+  - Examples for W = 32: `TMIN = -2,147,483,648` `TMAX: 2,147,483,647`
+
+| Constant_1     | Constant_2        | Relation | Evaluation |
+|:----------------|:-------------------:|:----------:|------------:|
+| 0              | 0U                | ==       | unsigned   |
+| -1             | 0                 | <        | signed     |
+| -1             | 0U                | >        | unsigned   |
+| 2147483647     | -2147483648       | >        | signed     |
+| 2147483647U    | -2147483648       | <        | unsigned   |
+| -1             | -2                | >        | signed     |
+| (unsigned)-1   | -2                | >        | unsigned   |
+| 2147483647     | 2147483648U       | <        | unsigned   |
+| 2147483647     | (int)2147483648U  | >        | unsigned   |
+
+## Shifting and sign extension
+
+### Shift Operations for unsigned integers
+
+- **Left shift: x<<y**
+  - Shift bit-vector x left by y positions
+    - Throws away extra bits on left
+    - Fill with 0s on right
+- **Right shift: x>>y**
+  - Shift bit-vector x right by y positions
+    - Throw away extra bits on right
+    - Fill with 0x on left
+
+|   x   |00000110|6(2^n) |
+|:-------|:--------:|--:|
+|  <<3  |00110000|48|
+|  <<2  |00000001| 1|
+
+|   x   |11110010|242|
+|:-------|:--------:|---:|
+|  <<3  |10010000|144(overflow)|
+|  <<2  |00111100|60|
+
+### Shift Operations for signed integers
+
+- **Left shift: x<<y**
+  - Equivalent to mulitplying by $2^y$
+  - (if resulting values fits, no 1s are lost)
+- **Right shift: x>>y**
+  - Logical shift (for unsigned values)
+    - Fill with 0s on left
+  - Arithmetic shift (for signed values)
+    - Replicate most significant bit on left
+    - Maintains sign of x
+  - Equivalent to dividing by $2^y$
+    - Correct rounding (towards 0) requires some care with signed numbers
+
+
+| Operation       | Binary       | Value          |
+|:----------------|:------------:|---------------:|
+| x               | **01100010** |            98  |
+| << 3            | **00010000** | 16 (784)       |
+| Logical >> 2    | **00011000** |            24  |
+| Arithmetic >> 2 | **00011000** |                |
+
+
+| Operation       | Binary       | Value               |
+|:----------------|:------------:|--------------------:|
+| x               | **10100010** |              -94    |
+| << 3            | **00010000** | 16 (underflow)      |
+| Logical >> 2    | **00101000** | 40 (wrong)          |
+| Arithmetic >> 2 | **11101000** |              -24    |
+
+
+
+> NB: Undefined behaviour when y < 0 or y >= word_size
