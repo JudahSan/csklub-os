@@ -369,15 +369,18 @@ uy = ty;
     - Throw away extra bits on right
     - Fill with 0x on left
 
-|   x   |00000110|6(2^n) |
-|:-------|:--------:|--:|
-|  <<3  |00110000|48|
-|  <<2  |00000001| 1|
+|   Operation   |     Binary   |Value (2^n)  |
+|:--------------|:------------:|------------:|
+|         x     | **00000110** |       6     |
+|        <<3    | **00110000** |      48     |
+|        <<2    | **00000001** |       1     |
 
-|   x   |11110010|242|
-|:-------|:--------:|---:|
-|  <<3  |10010000|144(overflow)|
-|  <<2  |00111100|60|
+
+|   Operation   |     Binary   |    Value    |
+|:--------------|:------------:|------------:|
+|         x     | **11110010** |     242     |
+|       <<3     | **10010000** |144(overflow)|
+|       <<2     | **00111100** |      60     |
 
 ### Shift Operations for signed integers
 
@@ -412,3 +415,53 @@ uy = ty;
 
 
 > NB: Undefined behaviour when y < 0 or y >= word_size
+
+### Using Shifts and Masks
+
+- **Extract the 2nd most significant byte of an integer**:
+  - First shift, then mask: ( x>>16) & 0xFF
+
+|  Operation   |               Binary               |
+|:-------------|:----------------------------------:|
+|     x        | 01100001 01100010 01100011 01100100|
+|   x>>16      | 00000000 00000000 01100001 01100010|
+|  0xFF(mask)  | 00000000 00000000 00000000 11111111|
+|(x>>16) & OXFF| 00000000 00000000 00000000 01100010|
+
+- **Extract the sign bit of a signed integer**:
+  - $(x >> 31)$ & $1$ - need the **"& 1"** to clear out all other bits except LSB.
+- **Conditionals as Boolean expressions** (assuming x is 0 or 1)
+  - `if (x) a = y else a = z;` which is the same as `a = x ? y : z;`
+  - Cab ve re-written (assuming arithmetic right shift) as: 
+    - a = ((x<<31)>>31 & y + ((!x) << 31)>>31) & z
+
+### Sign Extension
+
+- **Task**:
+  - Given w-bit signed integer x
+  - Convert it to w+k-bit integer with same value
+- **Rule**:
+  - Make k copies of sign bit:
+  - X = $x_{w-1},...,x_{w-1},x_{w-1},x_{w-2},...,x_0$
+
+![Shifting and sign extension](/images/shift_sign_extension.png)
+
+
+### Sign Extension Example
+
+- Converting from smaller to larger integer data type
+- C automatically performs sign extension
+
+```c
+short int x = 12345;
+int ix = (int) x;
+short int y = -12345;
+int iy = (int) y;
+```
+
+|Variable| Decimal |    Hex  |Binary|
+|:-------|:-------:|:-------:|:---------|
+|   x    | 12345 | 30 39     |00110000 001101101
+|  ix    | 12345 |00 00 30 39|00000000 00000000 00110000 01101101
+|   y    |-12345 |CF C7      |11001111 11000111 
+|  iy    |-12345 |FF FF CF C7|11111111 11111111 11001111 11000111
