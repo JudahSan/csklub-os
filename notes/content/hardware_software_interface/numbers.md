@@ -465,3 +465,59 @@ int iy = (int) y;
 |  ix    | 12345 |00 00 30 39|00000000 00000000 00110000 01101101
 |   y    |-12345 |CF C7      |11001111 11000111 
 |  iy    |-12345 |FF FF CF C7|11111111 11111111 11001111 11000111
+
+## Fractional Binary Numbers
+
+- Representation
+  - Bits to right of "binary point" represent fractional power of 2
+  - Represents rational number
+
+$$
+\sum_{k=-j}^{i} b_k \times 2^k
+$$
+
+### Fractional Binary Numbers: Examples
+
+|     Value      |           Representation        |
+|:---------------|:-------------------------------:|
+| 5 and 3/4      | $101.11_2$ |
+|2 and 7/8       | $10.111_2$  |
+|63/64        |  $0.111111_2|
+
+- **Observations**
+  - Divide by 2 by shifting right
+  - Multiply by 2 by shifting left
+  - Numbers of the form $0.111111...._2$ are just below $1.0$
+    - $\frac{1}{2} + \frac{1}{4} + \frac{1}{8} + ... + \frac{1}{2^{i}}+...\rightarrow 1.0$
+    - Shorthand notation for all 1 bits to the right of binary point: $1.0 - \epsilon$
+
+### Representable Values
+
+- **Limitations of fractional binary numbers**:
+  - Can only exactly represent numbers that can be written as $x * 2^y$
+  - Other rational numbers have repeating bit representations
+
+|     Value      |           Repeating bit Representation        |
+|:---------------|:------------------------------------------:|
+|        1/3     |      $0.0101010101[01]..._2$    |
+|     1/5        |    $0.001100110011[0011]..._2$  |
+|      1/10      |    $0.0001100110011[0011]..._2$ |
+
+### Fixed Point Representation
+- We might try representing fractional binary numbers by picking a fixed place for an implied binary poing
+  - 'fixed point binary numbers'
+- Example using 8-bit fixed point numbers
+  - the binary point between bits 2 and 3: $b_7b_6b_5b_4b_3[.]b_2b_1b_0$
+  - the binary point between bits 4 and 5: $b_7b_6b_5[.]b_4b_3b_2b_1b_0$
+- The position of the binary point affects the range and precision of the representation
+  - range: difference between largest and smallest numbers possible
+  - precision: smallest posible difference between any two numbers
+
+### Fixed Point Pros and Cons
+- Pros
+  - It's simple. The same hardware that does integer arithmetic can do fixed point arithmetic
+    - In fact, the programmer can use ints with an implicit fixed point
+    - ints are just fixed point numbers with the binary point to the right of $b_0$
+- Cons
+  - There is no good way to pick where the fixed point should be
+    - Sometimes you need range, sometimes you need precision - the more you have of one, the less of the other.
