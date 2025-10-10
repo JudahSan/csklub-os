@@ -2,6 +2,7 @@
 date = '2025-09-17T03:36:13+03:00'
 draft = false
 title = 'Architecture'
+toc = true
 weight = 20
 +++
 

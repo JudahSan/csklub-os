@@ -2,6 +2,7 @@
 date = '2025-09-24T03:36:13+03:00'
 draft = false
 title = 'Numbers'
+toc = true
 weight = 30
 +++
 
@@ -521,3 +522,209 @@ $$
 - Cons
   - There is no good way to pick where the fixed point should be
     - Sometimes you need range, sometimes you need precision - the more you have of one, the less of the other.
+
+## IEEE Floating Point
+
+- **Analogous to scientific notation**
+  - Not $12000000$ but $1.2 x 10^7$; not 0.0000012 but $1.2 x 10^{-6}$
+    - (write in C code as: 1.2e7; 1.2e-6)
+- **IEEE Standard 754**
+  - Established in 1985 as uniform standard for floating point arithmetic
+    - Before that, many idiosyncratic formats
+  - Supported by all major CPUs today
+- **Driven by numerical concerns**
+  - Standards for handling rounding, overflow, underflow
+  - Hard to make fast in hardware but numerically well-behaved
+
+### Floating Point Representation
+
+- **Numeric form**:
+
+$$V_{10} = (-1)^S * M * 2^E$$
+
+  - S = sign bit (0 for positive, 1 for negative)
+  - M = mantissa (or significand) normally a fraction value in range [1.0, 2.0]
+  - E = exponent weights value by a (possibly negative) (power of 2)
+- **Representation in memory**:
+  - MSB s is sign bit $s$
+  - exp field encodes $E$ (but is not equal to E)...range
+  - frac field encodes $M$ (but is not equal to M)...precision
+
+![Float representation](/images/float_rep.png)
+
+### Precisions
+
+- Single precision: 32 bits
+  - s = 1, `exp`: k = 8, `frac`: n=23
+![Float representation](/images/float_rep.png)
+
+
+- Double precision: 64 bits
+  - s = 1, `exp`: k = 11, `frac`: n=52
+![Float representation](/images/float_rep.png)
+
+### Normalization and Special Values
+
+$$V = (-1)^S * M * 2^E$$
+
+![Float representation](/images/float_rep.png)
+`exp`: k, `frac`: n
+
+- **Normalized** means the mantissa **M** has the form 1.xxxxxx
+  - $0.011x2^5$ and $1.1 x 2^3$ represent the same number, but the latter makes better use of the available bits
+  - Since we know the mantissa starts with a 1, we don't bother to store it
+- **Special Values**:
+  - The bit pattern 00.0 represents zero
+  - If $exp==11...1$ and $frac == 00.00$, it represents $\infty$
+    - eg $$1.0/0.0 = -1.0/-0.0=+\infty$$ $$1.0/-0.0 = -1.0/0.0=-\infty$$ 
+  - If $exp == 11...1$ and $frac != 00...0$, it represents *NaN*: **Not a Number**
+    - Results from operatons with undefined result,
+      - e.g. $\sqrt{-1}$, $\infty - \infty, \infty * 0$
+
+## Normalized Values
+
+$$V = (-1)^S * M * 2^E$$
+
+![Float representation](/images/float_rep.png)
+`exp`: k, `frac`: n
+
+- **Condition**: $exp \not ={000...0}$ and $exp \not ={111...1}$
+- **Exponent coded as biased value: $E = exp - Bias$**
+  - exp is an unsigned value ranging from $1$ to $2^k-2$ (k == # bits in exp)
+  - $Bias = 2^{k-1}-1$
+    - Single precision: $127$ (so $exp: 1...254, E: -126...127$)
+    - Double precision: $1023$ (so $exp: 1...1-46, E: -1022...1023$)
+  - These enable negative values for $E$, for representing very small values
+- **Significand coded with implied leading $1:M - 1.xxx.x_2$**
+  - $xxx.x$: the n bits of frac
+  - Minimum when $000.0 (M = 1.0)$
+  - Maximum when $111...1 (M  = 2.0 - \epsilon)$
+  - Get extra leading bit for free
+
+### Normalized Encoding Example
+
+$$V = (-1)^S * M * 2^E$$
+
+![Float representation](/images/float_rep.png)
+`exp`: k, `frac`: n
+
+- **Value**: float f = 1234.0;
+  - $12345_10 = 11000000111001_2$
+    - $= 1.1000000111001_2 x 2^{13}$ (normalized form) 
+- **Significand**:
+  - $M = 1.1000000111001_2$
+  - $frac = 10000001110010000000000_2$
+- **Exponents**: $E = exp - Bias$, so $exp = E + Bias$
+  - $E = 13$
+  - $Bias = 127$
+  - $exp = 140 = 10001100_2$
+- Result:
+
+| s(sign bit) |    exp field(range)    |         frac field(precision)          |
+|:-----------:|:----------------------:|:--------------------------------------:|
+|       0     |          10001100      |          10000001110010000000000       |
+
+
+
+## Floating Point Operations: Basic Idea
+
+$$V = (-1)^S * M * 2^E$$
+
+
+![Float representation](/images/float_rep.png)
+`exp`: k, `frac`: n
+
+- $x +_f y = Round(x + y)$
+- $x *_f y = Round(x * y)$
+- Basic idea for floating point operations:
+  - First, compute the exact result
+  - Then, round the result to make it fit into desired precision:
+    - Possibly overflow if exponent too large
+    - Possibly drop least-significat bits of significand to fit into frac
+
+### Rounding modes
+
+- Possible rounding modes (illustrated with dollar rounding):
+
+|Rounding modes       |$1.40|$1.60|$1.50|$2.50|-$1.50|
+|:-------------------:|:---:|:---:|:---:|:---:|:----:|
+|Round-toward-zero    |$1   |$1   |$1   |$2   |-$1
+|Round-down($-\infty$)|$1   |$1   |$1   |$2   |-$2
+|Round-up ($+\infty$) |$2   |$2   |$2   |$3   |-$1
+|Round-to-nearest     |$1   |$2   |??   |??   |??
+|Rount-to-even        |$1   |$2   |$2   |$2   |-$2
+
+- What could happen if we've repeatedly rounding the results of out operations?
+  - If we always round in the same direction, we could introduce a statistical bias into our set of values
+- Round-to-even avoids this bias by rounding up about half the time, and rounding down about half the time
+  - Default rounding mode for  IEEE floating-point
+
+### Mathematical Properties of FP Operations
+
+- If overflow of the exponent occurs, result will be $\infty$ or $-\infty$
+- Floats with value $\infty$ , $-\infty$, and NaN can be used in operations
+  - Result is usually still $\infty$ , $-\infty$, and NaN; sometimes intuitive, sometimes not
+- Floating point operations are not always associative or distributive, due to rounding
+  - $(3.14 + 1e10) - 1e10 != 3.14 + (1e10 - 1e10)$
+  - $1e20 * (1e20 - 1e20) != (1e20 * 1e20) - (1e20 * 1e20)$
+  
+## Floating Point in C
+
+- C offers two levels of precision
+  - `float` single precision (32-bit)
+  - `double` double precision (64-bit)
+- Default rounding mode is round-to-even
+- `# include <math.h> ` to get INFINITY and NAN constants
+- Equality (==) comparisons between floating point numbers are tricky, and often return unexpected results
+  - Just avoid them!
+
+- Conversions between data types
+  - **Casting between int, float, and double changes the bit representation!!**
+  - `int -> float`
+    - May be rounded; overflow not possible
+  - `int -> double` or `float -> double`
+    - Exact conversion, as long as int has $\leq$ 53-bit word size
+  - `double or float' -> `int`
+    - Truncates fractional part (rounded towards zero)
+    - Not defined when out of range of NaN: generally set to Tmin
+
+### Summary
+
+**Zero**
+  
+| s(sign bit) |    exp field(range)    |         frac field(precision)          |
+|:-----------:|:----------------------:|:--------------------------------------:|
+|      0     |          00000000      |          00000000000000000000000       |
+
+**Normalized values**
+  
+| s(sign bit) |    exp field(range)    |         frac field(precision)          |
+|:-----------:|:----------------------:|:--------------------------------------:|
+|       s     |          $1 to 2^k-2$      |          significand = 1.M       |
+
+**Infinity**
+
+| s(sign bit) |    exp field(range)    |         frac field(precision)          |
+|:-----------:|:----------------------:|:--------------------------------------:|
+|       s     |          11111111      |          00000000000000000000000       |
+
+**NaN**
+
+| s(sign bit) |    exp field(range)    |         frac field(precision)          |
+|:-----------:|:----------------------:|:--------------------------------------:|
+|       s     |          11111111      |          non-zero       |
+
+**Denormalized values**
+
+| s(sign bit) |    exp field(range)    |         frac field(precision)          |
+|:-----------:|:----------------------:|:--------------------------------------:|
+|       s     |          00000000      |            significand = 0.M           |
+
+- As with integers, floats suffer from the fixed number of bits available to represent them
+  - Can get overflow/ underflow, just like ints
+  - Some "simple fractions" have no exact representation (e.g, 0.2)
+  - Can also lose precision, unlike ints
+    - Every operation gets a slightly wrong result
+- Mathematically equivalent ways of writing an expession may compute different results
+  - Violates associativity/ distributivity
+- Never test floating point vaues for equality!
