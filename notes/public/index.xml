@@ -6,7 +6,7 @@
     <description>Recent content on CSKlub Operating System Notes</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 24 Sep 2025 03:36:13 +0300</lastBuildDate>
+    <lastBuildDate>Fri, 10 Oct 2025 03:36:13 +0300</lastBuildDate>
     <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Introduction</title>
@@ -28,6 +28,13 @@
       <pubDate>Wed, 24 Sep 2025 03:36:13 +0300</pubDate>
       <guid>http://localhost:1313/hardware_software_interface/numbers/</guid>
       <description>&lt;h1 id=&#34;integer--floating-point-numbers&#34;&gt;Integer &amp;amp; Floating Point Numbers&lt;/h1&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;Representation of integers: unsigned and signed&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;Unsigned and signed integers in C&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;Arithmetic and shifting&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;Sign extension&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;Background: fractional binary numbers&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;IEEE floating-point standard&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;Floating-point operations and rounding&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;Floating-point in C&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h3 id=&#34;encoding&#34;&gt;Encoding&lt;/h3&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;How about encoding a standard deck of playing cards?&lt;/li&gt;&#xA;&lt;li&gt;52 cards in 4 suits&#xA;&lt;ul&gt;&#xA;&lt;li&gt;How do we encode suits, face cards?&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;What operations do we want to make easy to implement?&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Which is the higher value card?&lt;/li&gt;&#xA;&lt;li&gt;Are they the same suit?&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;&lt;strong&gt;Two possible representation&lt;/strong&gt;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Memory</title>
+      <link>http://localhost:1313/hardware_software_interface/memory/</link>
+      <pubDate>Fri, 10 Oct 2025 03:36:13 +0300</pubDate>
+      <guid>http://localhost:1313/hardware_software_interface/memory/</guid>
+      <description></description>
     </item>
   </channel>
 </rss>

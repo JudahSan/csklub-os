@@ -370,7 +370,7 @@ uy = ty;
     - Throw away extra bits on right
     - Fill with 0x on left
 
-|   Operation   |     Binary   |Value (2^n)  |
+|   Operation   |     Binary   |Value ($2^n$)  |
 |:--------------|:------------:|------------:|
 |         x     | **00000110** |       6     |
 |        <<3    | **00110000** |      48     |
@@ -543,7 +543,7 @@ $$
 $$V_{10} = (-1)^S * M * 2^E$$
 
   - S = sign bit (0 for positive, 1 for negative)
-  - M = mantissa (or significand) normally a fraction value in range [1.0, 2.0]
+  - M = mantissa (or significand) normally a fraction value in range [1.0, 2.0). Can be exactly 1.0 but < 2.0.
   - E = exponent weights value by a (possibly negative) (power of 2)
 - **Representation in memory**:
   - MSB s is sign bit $s$
