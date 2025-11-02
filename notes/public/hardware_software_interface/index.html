@@ -7,7 +7,7 @@
     <title>CSKlub Operating System Notes</title>
     <meta name="viewport" content="width=device-width,minimum-scale=1">
     <meta name="description" content="">
-    <meta name="generator" content="Hugo 0.151.0">
+    <meta name="generator" content="Hugo 0.152.2">
     
     
     
@@ -227,7 +227,8 @@
 <h2 id="translation-impacts-performance">Translation Impacts Performance</h2>
 <p><img src="/images/prog_lifetime.png" alt="program lifetime"></p>
 <blockquote>
-<p>Program lifetime illustration</p></blockquote>
+<p>Program lifetime illustration</p>
+</blockquote>
 <ul>
 <li>The time required to execute a program depends on:
 <ul>
@@ -477,7 +478,184 @@
       </a>
     </h1>
     <div class="nested-links f5 lh-copy nested-copy-line-height">
-      
+      <h1 id="memory-data-and-addressing">Memory, Data, and Addressing</h1>
+<h2 id="preliminaries">Preliminaries</h2>
+<ul>
+<li>Preliminaries</li>
+<li>Prepresenting information as bits and bytes</li>
+<li>Organizing and addressing data in memory</li>
+<li>Manipulating data in memory using C</li>
+<li>Boolean algebra and bit-level manipulations</li>
+</ul>
+<h3 id="hardware-logical-view">Hardware: Logical View</h3>
+<p><img src="/images/hw_logical_view.png" alt="H/W Logical View"></p>
+<h3 id="hardware-semi-logical-view">Hardware: Semi-Logical View</h3>
+<p><img src="/images/semi_logical_view.jpg" alt="H/W Semi Logical View"></p>
+<blockquote>
+<p>Intel* P45 Express Chipset Block Diagram</p>
+</blockquote>
+<h3 id="hardware-physical-view">Hardware: Physical View</h3>
+<p><img src="/images/hw_physical_view.png" alt="HW Physical View"></p>
+<h3 id="cpu-memory-registers-and-instruction-cache">CPU &ldquo;Memory&rdquo;: Registers and Instruction Cache</h3>
+<p><img src="/images/cpu_memory.png" alt="CPU Memory"></p>
+<ul>
+<li>There are a fixed number of registers in the CPU
+<ul>
+<li>Registers hold data</li>
+</ul>
+</li>
+<li>There is an I-cache in the CPU that holds recently fetched instructions
+<ul>
+<li>If you execute a loop that fits in the cache, the CPU goes to memory for those instructions only once, then executes them out of its cache</li>
+</ul>
+</li>
+</ul>
+<h3 id="performance-its-not-just-cpu-speed">Performance: It&rsquo;s Not Just CPU Speed</h3>
+<ul>
+<li><strong>Data and instructions reside in memory</strong>
+<ul>
+<li>To execute an instruction, it must be fetched into the CPU</li>
+<li>Next, the data on the which the instruction operates must be fetched from memory and brought to the CPU</li>
+</ul>
+</li>
+<li><strong>CPU &lt;&ndash;&gt; Memory bandwidth can limit performance</strong>
+<ul>
+<li>Improving performance 1: hardware improvements to increase memory bandwidth (e.g., DDR2 -&gt; DDR3 -&gt; DDR4)</li>
+<li>Improving performance 2: move less data into/ out of the CPU
+<ul>
+<li>Put some &ldquo;memory&rdquo; in the CPU chip itself (this is &ldquo;cache&rdquo; memory)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="binary-representations">Binary Representations</h3>
+<ul>
+<li>Base 2 number representation
+<ul>
+<li>Represent $351_{10}$ as $0000000101011111_2$ or $101011111_2$</li>
+</ul>
+</li>
+<li>Electronic implementation
+<ul>
+<li>Easy to store with bi-stable elements</li>
+<li>Reliably transmitted on noisy and inaccurate wires</li>
+</ul>
+</li>
+</ul>
+<h2 id="representing-information-as-bits-and-bytes">Representing information as bits and bytes</h2>
+<h3 id="encoding-byte-values">Encoding Byte Values</h3>
+<ul>
+<li>Binary: $00000000_2$ &ndash; $11111111_2$
+<ul>
+<li>Byte = 8 bits (binary digits)</li>
+<li>Example: $00101011_2$ = $32 + 8 + 2 + 1$ = $43_{10}$</li>
+<li>Example: $26_{10} = 16 + 8 + 2 = 00101010_2$</li>
+</ul>
+</li>
+<li>Decimal: $0_{10}$ &ndash; $255_{10}$</li>
+<li>Hexadecimal: $00_{16}$ &ndash; $FF_{16}$
+<ul>
+<li>Groups of 4 binary digits</li>
+<li>Byte = 2 hexadecimal (hex) or base 16 digits</li>
+<li>Base-16 number representation</li>
+<li>Use characters &lsquo;0&rsquo; to &lsquo;9&rsquo; and &lsquo;A&rsquo; to &lsquo;F&rsquo; to represent</li>
+<li>Write $FA1D37B_{16}$ in C code as a 4-byte value: $0XFA1D37B$ or $0xfald37b$</li>
+</ul>
+</li>
+</ul>
+<table>
+  <thead>
+      <tr>
+          <th>Hex</th>
+          <th>Decimal</th>
+          <th>Binary</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>0</td>
+          <td>0</td>
+          <td>0000</td>
+      </tr>
+      <tr>
+          <td>1</td>
+          <td>1</td>
+          <td>0001</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>2</td>
+          <td>0010</td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td>3</td>
+          <td>0011</td>
+      </tr>
+      <tr>
+          <td>4</td>
+          <td>4</td>
+          <td>0100</td>
+      </tr>
+      <tr>
+          <td>5</td>
+          <td>5</td>
+          <td>0101</td>
+      </tr>
+      <tr>
+          <td>6</td>
+          <td>6</td>
+          <td>0110</td>
+      </tr>
+      <tr>
+          <td>7</td>
+          <td>7</td>
+          <td>0111</td>
+      </tr>
+      <tr>
+          <td>8</td>
+          <td>8</td>
+          <td>1000</td>
+      </tr>
+      <tr>
+          <td>9</td>
+          <td>9</td>
+          <td>1001</td>
+      </tr>
+      <tr>
+          <td>A</td>
+          <td>10</td>
+          <td>1010</td>
+      </tr>
+      <tr>
+          <td>B</td>
+          <td>11</td>
+          <td>1011</td>
+      </tr>
+      <tr>
+          <td>C</td>
+          <td>12</td>
+          <td>1100</td>
+      </tr>
+      <tr>
+          <td>D</td>
+          <td>13</td>
+          <td>1101</td>
+      </tr>
+      <tr>
+          <td>E</td>
+          <td>14</td>
+          <td>1110</td>
+      </tr>
+      <tr>
+          <td>F</td>
+          <td>15</td>
+          <td>1111</td>
+      </tr>
+  </tbody>
+</table>
+<p>How is memory organized?</p>
     </div>
     <a href="/hardware_software_interface/memory/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
   </div>
