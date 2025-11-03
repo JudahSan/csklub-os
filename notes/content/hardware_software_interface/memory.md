@@ -693,4 +693,156 @@ array_ptr = &bit_array[130];   // 0x00ff0208(out of bounds, C doesn't check)
   - C can use wchar_t or specialized libraries for Unicode.
   - Go uses UTF-8 by default and provides the rune type for Unicode code points.
 
-Examining Data Representations
+
+### Examining Data Representations
+
+- Code to print byte representation of data
+  - Any data type can be treated as a byte array by casting it to char
+
+```c
+void show_bytes(char *start, int len) {
+  int i;
+  for (i = 0; i < len; i++)
+    printf("%p\t0x%.2x\n", start+i, *(start+i));
+  printf("\n");
+}
+```
+
+```c
+void show_int (int x) {
+  show_bytes ( (char *) &x, sizeof(int));
+}
+```
+
+- `printf` directives
+  - `%p` Print Pointer
+  - `\t` Tab
+  - `%x` Print value as hex
+  - `\n` New line
+
+Example:
+
+```c
+int a = 12345; // represented as 0x00003039
+printf("int a = 12345;\n");
+show_int(a); // show_bytes ( (byte *) &a, sizeof(int));
+```
+
+Reseult:
+
+```c
+int a = 12345;
+0x7fff6f330dcc 0x39
+0x7fff6f330dcd 0x30
+0x7fff6f330dce 0x00
+0x7fff6f330dcf 0x00
+```
+
+### Boolean algebra and bit-level manipulations
+
+- Developed by George Boole in 19th Century
+  - Algebraic representation of logic
+    - Encode "True" as 1 and "False" as 0
+  - AND: A&B = 1 when both A is 1 and B is 1
+  - OR: A|B = 1 when either A is 1 or B is 1
+  - XOR: A^B = 1 when either A is 1 or B is 1, but not both
+  - NOT: ~A = 1 when A is 0 and vice-versa
+  - DeMorgan's Law: ~(A|B) = ~A & ~B
+
+| & | 0 | 1 |
+|---|---|---|
+| 0 | 0 | 0 |
+| 1 | 0 | 1 |
+
+| OR | 0 | 1 |
+|----|---|---|
+| 0 | 0 | 0 |
+| 1 | 1 | 1 |
+
+| ^ | 0 | 1 |
+|---|---|---|
+| 0 | 0 | 1 |
+| 1 | 1 | 0 |
+
+| NOT |   | 
+|:---|---:|
+| 0 | 1 |
+| 1 | 0 |
+
+### Manipulating Bits
+
+- Boolean operators can be applied to bit vectors: operations are applied bitwise
+
+0000 + 100101 = 1010101
+
+| |0|1|1|0|1|0|0|1|
+|-|-|-|-|-|-|-|-|-|
+|&|0|1|0|1|0|1|0|1|
+| |0|1|0|0|0|0|0|1|
+
+<br>
+
+| |0|1|1|0|1|0|0|1|
+|-|-|-|-|-|-|-|-|-|
+|OR|0|1|0|1|0|1|0|1|
+| |0|1|1|1|1|1|0|1|
+<br>
+
+| |0|1|1|0|1|0|0|1|
+|-|-|-|-|-|-|-|-|-|
+|^|0|1|0|1|0|1|0|1|
+| |0|0|1|1|1|1|0|0|
+<br>
+
+
+|~|0|1|0|1|0|1|0|1|
+|-|-|-|-|-|-|-|-|-|
+| |1|0|1|0|1|0|1|0|
+
+### Bit-Level Operations in C
+- Bitwise operations &, |, ^, ~(complement) are available in C
+  - Apply to any "integral" data type
+    - long, int, short, char
+  - Argumants are treated as bit vectors
+  - Operations applied bitwise
+- Examples:
+
+```c
+char a, b, c;
+a = (char) 0x41;   // 0x41 -> 01000001_2
+b = ~a;            //         10111110_2 -> 0xBE
+a = (char)0;       // 0x00 -> 00000000_2
+b = ~a;            //         11111111_2 -> 0xFF
+a = (char)0x69;    // 0x69 -> 01101001_2
+b = (char)0x55;    // 0x55 -> 01010101_2
+c = a & b;        //          01000001_2 -> 0x41
+```
+
+### Contrast: Logic Operations in C
+
+- Logic operators in C: &&, ||, !
+  - Behavior:
+    - View 0 as "False"
+    - Anything nonzero as "True"
+    - Always return 0 or 1
+    - Early termination (&& and ||)
+- Examples (char data type)
+  - !0x41             --> 0x00
+  - !0x00             --> 0x01
+  - 0x69 && 0x55      --> 0x01
+  - 0x00 && 0x55      --> 0x00
+  - 0x69 || 0x55      --> 0x01
+  - p && *p++  (avoids null pointer access: null pointer = 0x000000000) short `for if (p) { *p++; }`
+
+### Representing and Manupulating Sets
+
+- Bit vectors can be used to represent sets
+  - Width w bit vector represents subsets of {0,...,w-1}
+  - $a_j=1 if j \forall A$ - each bit in the vector represents the absence (0) or presence (1) of an element in the set
+  - 01101001 -> 7`65`4`3`21`0` -> {0,3,5,6}
+  - 01010101 -> 7`6`5`4`3`2`1`0` -> {0,2,4,6}
+- Operations
+  - & Intersection           01000001 {0, 6}
+  - | Union                  01111101 {0,2,3,4,5,6}
+  - ^ Symmetric difference   00111100 {2,3,4,5}
+  - ~ Complement             10101010 {1,3,5,7}
