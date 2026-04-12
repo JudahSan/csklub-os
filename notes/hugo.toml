@@ -1,4 +1,4 @@
-baseURL = 'https://example.org/'
+baseURL = 'https://csklub-os-notes.netlify.app/'
 languageCode = 'en-us'
 title = 'CSKlub Operating System Notes'
 theme = "ananke"

@@ -1,0 +1,15 @@
+{
+  "name": "CSKlub OS Notes",
+  "short_name": "CSKlub",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "icons": [
+    {
+      "src": "/images/gohugo-default-sample-hero-image.jpg",
+      "sizes": "any",
+      "type": "image/jpeg"
+    }
+  ]
+}
