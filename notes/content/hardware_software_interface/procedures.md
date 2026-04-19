@@ -244,3 +244,146 @@ amI
   - Return address
     - Pushed by `call` instruction
     - Arguments for this call
+
+** Revisting swap**
+
+```c
+int zip1 = 15213;
+int zip2 = 98195;
+
+void call_swap()
+{
+    swap(&zip1, &zip2);
+}
+
+void swap(int *xp, int *yp)
+{
+    int t0 = *xp;
+    int t1 = *yp;
+    *xp = t1;
+    *yp = t0;
+}
+```
+
+Calling swap from call_swap
+
+```asm
+call_swap:
+    ...
+    push1 $zip2  # Global var
+    push1 $zip2  # Global var
+    call swap
+    ...
+```
+
+```asm
+swap:
+    # Setup
+    push1 %ebp
+    movl %esp, %ebp
+    pushl %ebx
+
+    # Body
+    movl 12(%ebp), %ecx
+    movl 8(%ebp), %edx
+    movl (%ecx), %eax
+    movl (%edx), %ebx
+    movl %eax, (%edx)
+    movl %ebx, (%ecx)
+
+    # Finish
+    movl -4(%ebp), %ebx
+    movl %ebp, %esp
+    popl %ebp
+    ret
+```
+
+## Allocating local variables on the stack
+
+### Register Saving Conventions
+
+- When procedure `yoo` calles who:
+  - yoo is the caller
+  - who is the callee
+- Can a register be used for temporary storage?
+
+```asm
+yoo:
+    ...
+    movl $12345, %edx
+    call who
+    addl%edx, %eax
+    ...
+    ret
+```
+
+```asm
+who:
+    ...
+    movl 8(%ebp), %edx
+    addl $98195, %edx
+    ...
+    ret
+```
+
+- Contents of register %edx overwritten by who
+- Conventions
+  - "**Caller Save**"
+    - Caller saves temporary values in its frame before calling
+  - "**Callee Save**"
+    - Callee saves temporary values in its frame before using
+
+**IA32/Linux Register Usage**
+
+```asm
+# Caller-save Temporaries
+%eax
+%edx
+%ecx
+
+# Callee-save Temporaries
+%ebx
+%esi
+%edi
+
+# Special
+%esp
+%ebp
+```
+
+- %eax, %edx, $ecx
+  - Caller saves prior to call if values are used later
+- %eax
+  - also used to return integer value
+- %ebx, %esi, %edi
+  - Callee saves if wants to used them
+- %esp, %ebp
+  - special form of calle save- restored to original values upon exit from procedure
+
+**Example: Pointer to Local Variables**
+
+- Recursive Procedure
+```c
+void s_helper (int x, int *accum)
+{
+    if (x <= 1)
+        return;
+    else {
+        int z = *accum * x;
+        *accum = z;
+        s_helper (x-1, accum);
+    }
+}
+
+- Top-Level Call
+
+```c
+int sfact(int x)
+{
+    int val = 1;
+    s_helper(x, &val);
+    return val;
+}
+```
+
+- Pass pointer to update location
