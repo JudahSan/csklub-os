@@ -812,7 +812,52 @@
 <li>Register-saving conventions</li>
 <li>Procedures and stacks on x64 architecture</li>
 </ul>
-<p><img src="image.png" alt="alt text"></p>
+<h3 id="memory-layout">Memory Layout</h3>
+<p><img src="/images/stack.png" alt="alt text"></p>
+<table>
+  <thead>
+      <tr>
+          <th>Memory Permissions</th>
+          <th>Segment / Region</th>
+          <th>Management / Initialization</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Writable; not executable</td>
+          <td>Stack</td>
+          <td>Managed automatically (by compiler/runtime)</td>
+      </tr>
+      <tr>
+          <td>Writable; not executable</td>
+          <td>Dynamic Data (Heap)</td>
+          <td>Managed by programmer</td>
+      </tr>
+      <tr>
+          <td>Writable; not executable</td>
+          <td>Static Data</td>
+          <td>Initialized when process starts</td>
+      </tr>
+      <tr>
+          <td>Read-only; not executable</td>
+          <td>Literals</td>
+          <td>Initialized when process starts</td>
+      </tr>
+      <tr>
+          <td>Read-only; executable</td>
+          <td>Instructions (Code)</td>
+          <td>Initialized when process starts</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="ia32-call-stack">IA32 Call Stack</h3>
+<ul>
+<li>Region of memory managed with a stack &ldquo;discipline&rdquo;</li>
+<li>Grows towards lower addresses</li>
+<li>Customarily shown &ldquo;upside-down&rdquo;</li>
+<li>Register <code>%esp</code> contains lowest stack address = address of &ldquo;top&rdquo; element</li>
+</ul>
+<p><img src="/images/ia32-callstack.png" alt="alt text"></p>
     </div>
     <a href="/hardware_software_interface/procedures/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
   </div>
