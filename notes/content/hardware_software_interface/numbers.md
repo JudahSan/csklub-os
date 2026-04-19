@@ -3,7 +3,7 @@ date = '2025-09-24T03:36:13+03:00'
 draft = false
 title = 'Numbers'
 toc = true
-weight = 30
+weight = 15
 +++
 
 # Integer & Floating Point Numbers

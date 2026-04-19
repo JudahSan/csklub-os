@@ -47,8 +47,8 @@
   <meta property="og:type" content="website">
 
   <meta itemprop="name" content="CSKlub Operating System Notes">
-  <meta itemprop="datePublished" content="2025-11-02T03:36:13+03:00">
-  <meta itemprop="dateModified" content="2025-11-02T03:36:13+03:00">
+  <meta itemprop="datePublished" content="2026-04-12T03:36:13+03:00">
+  <meta itemprop="dateModified" content="2026-04-12T03:36:13+03:00">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="CSKlub Operating System Notes">
 
@@ -124,132 +124,6 @@
 
       <section class="w-100 mw8">
         
-        
-          <div class="w-100 mb4 relative">
-            
-<article class="bb b--black-10">
-  <div class="db pv4 ph3 ph0-l dark-gray no-underline">
-    <div class="flex-column flex-row-ns flex">
-      
-      <div class="blah w-100">
-        <h1 class="f3 fw1 athelas mt0 lh-title">
-          <a href="/hardware_software_interface/x86/" class="color-inherit dim link">
-            x86 Assembly
-            </a>
-        </h1>
-        <div class="f6 f5-l lh-copy nested-copy-line-height nested-links">
-          <h1 id="assembly-programming">Assembly Programming</h1>
-<ul>
-<li>Move instructions, registers, and operands</li>
-<li>Memory addressing modes</li>
-<li>swap example: 32-bit vs 64-bit</li>
-<li>Arithmetic operations</li>
-<li>Condition codes</li>
-<li>Conditional and unconditional branches</li>
-<li>Loops</li>
-<li>Switch statements</li>
-</ul>
-<h3 id="three-basic-kinds-of-instructions">Three Basic Kinds of Instructions</h3>
-<ul>
-<li>Transfer data between memory and register
-<ul>
-<li><code>Load</code> data from memory into register
-<ul>
-<li><code>%reg = Mem[address]</code></li>
-</ul>
-</li>
-<li><code>Store</code> register data into memory
-<ul>
-<li><code>Mem[address] = %reg</code></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<blockquote>
-<p>Memory is indexed just like an array[]</p>
-</blockquote>
-<ul>
-<li>Perform arithmetic function on register or memory data
-<ul>
-<li><code>c = a + b;</code></li>
-</ul>
-</li>
-<li>Transfer control
-<ul>
-<li>Unconditional jumps to/ from procedures</li>
-<li>Conditional branches</li>
-</ul>
-</li>
-</ul>
-<h3 id="moving-data-ia32">Moving Data: IA32</h3>
-<ul>
-<li>IA32 has 8 registers. 6 are general purpose and 2 special purpose(the last 2)</li>
-</ul>
-<table>
-  <thead>
-      <tr>
-          <th style="text-align: center">Register</th>
-          <th style="text-align: center">Size(32-bit)</th>
-          <th style="text-align: left">Usage  (mostly obsolete)</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td style="text-align: center">%eax</td>
-          <td style="text-align: center">32</td>
-          <td style="text-align: left">Accumulator for operands and results data</td>
-      </tr>
-      <tr>
-          <td style="text-align: center">%ecx</td>
-          <td style="text-align: center">32</td>
-          <td style="text-align: left">Counter for string and loop operations</td>
-      </tr>
-      <tr>
-          <td style="text-align: center">%edx</td>
-          <td style="text-align: center">32</td>
-          <td style="text-align: left">I/O pointer</td>
-      </tr>
-      <tr>
-          <td style="text-align: center">%ebx</td>
-          <td style="text-align: center">32</td>
-          <td style="text-align: left">Pointer to data in the data segment</td>
-      </tr>
-      <tr>
-          <td style="text-align: center">%esi</td>
-          <td style="text-align: center">32</td>
-          <td style="text-align: left">Source pointer for string operations</td>
-      </tr>
-      <tr>
-          <td style="text-align: center">%edi</td>
-          <td style="text-align: center">32</td>
-          <td style="text-align: left">Destination pointer for string operations</td>
-      </tr>
-      <tr>
-          <td style="text-align: center">%esp</td>
-          <td style="text-align: center">32</td>
-          <td style="text-align: left">Stack pointer</td>
-      </tr>
-      <tr>
-          <td style="text-align: center">%ebp</td>
-          <td style="text-align: center">32</td>
-          <td style="text-align: left">Pointer to the base of the current stack frame</td>
-      </tr>
-  </tbody>
-</table>
-<ul>
-<li>Moving Data
-<ul>
-<li>
-<p><code>movx Source, Dest</code></p>
-        </div>
-        <a href="/hardware_software_interface/x86/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
-      </div>
-    </div>
-  </div>
-</article>
-
-          </div>
         
           <div class="w-100 mb4 relative">
             
@@ -563,6 +437,71 @@
 
           </div>
         
+          <div class="w-100 mb4 relative">
+            
+<article class="bb b--black-10">
+  <div class="db pv4 ph3 ph0-l dark-gray no-underline">
+    <div class="flex-column flex-row-ns flex">
+      
+      <div class="blah w-100">
+        <h1 class="f3 fw1 athelas mt0 lh-title">
+          <a href="/hardware_software_interface/numbers/" class="color-inherit dim link">
+            Numbers
+            </a>
+        </h1>
+        <div class="f6 f5-l lh-copy nested-copy-line-height nested-links">
+          <h1 id="integer--floating-point-numbers">Integer &amp; Floating Point Numbers</h1>
+<ul>
+<li>
+<p>Representation of integers: unsigned and signed</p>
+</li>
+<li>
+<p>Unsigned and signed integers in C</p>
+</li>
+<li>
+<p>Arithmetic and shifting</p>
+</li>
+<li>
+<p>Sign extension</p>
+</li>
+<li>
+<p>Background: fractional binary numbers</p>
+</li>
+<li>
+<p>IEEE floating-point standard</p>
+</li>
+<li>
+<p>Floating-point operations and rounding</p>
+</li>
+<li>
+<p>Floating-point in C</p>
+</li>
+</ul>
+<h3 id="encoding">Encoding</h3>
+<ul>
+<li>How about encoding a standard deck of playing cards?</li>
+<li>52 cards in 4 suits
+<ul>
+<li>How do we encode suits, face cards?</li>
+</ul>
+</li>
+<li>What operations do we want to make easy to implement?
+<ul>
+<li>Which is the higher value card?</li>
+<li>Are they the same suit?</li>
+</ul>
+</li>
+</ul>
+<p><strong>Two possible representation</strong></p>
+        </div>
+        <a href="/hardware_software_interface/numbers/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
+      </div>
+    </div>
+  </div>
+</article>
+
+          </div>
+        
       </section>
 
       
@@ -571,14 +510,20 @@
           
           
             <h2 class="f5 fw4 mb4 dib mr3">
-              <a href="/hardware_software_interface/numbers/" class="link black dim">
-                Numbers
+              <a href="/hardware_software_interface/memory/" class="link black dim">
+                Memory
               </a>
             </h2>
           
             <h2 class="f5 fw4 mb4 dib mr3">
-              <a href="/hardware_software_interface/memory/" class="link black dim">
-                Memory
+              <a href="/hardware_software_interface/x86/" class="link black dim">
+                x86 Assembly
+              </a>
+            </h2>
+          
+            <h2 class="f5 fw4 mb4 dib mr3">
+              <a href="/hardware_software_interface/procedures/" class="link black dim">
+                Procedures
               </a>
             </h2>
           
