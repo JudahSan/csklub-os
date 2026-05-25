@@ -168,7 +168,7 @@ return
 - Stack allocated in frames
   - State for a single procedure instantiation
 
-** Call Chain Example**
+**Call Chain Example**
 
 ```c
 yoo(...)
@@ -245,7 +245,7 @@ amI
     - Pushed by `call` instruction
     - Arguments for this call
 
-** Revisting swap**
+**Revisting swap**
 
 ```c
 int zip1 = 15213;
@@ -351,6 +351,16 @@ who:
 %ebp
 ```
 
+**%ebp (Extended Base Pointer)**
+- The "Anchor": Also called the Frame Pointer, it stays at a fixed location for the duration of a function.
+- Stack Frames: At the start of a function, the old %ebp is saved, and the current %esp is copied into %ebp to "lock" the base of the new frame.
+
+**%esp (Extended Stack Pointer)** 
+- The "Mover": Points to the very top (the current lowest memory address) of the stack.
+- Dynamic: its value changes automatically whenever you use push, pop, call, or ret instructions
+- Tracking: It keeps track of the next available space or the last item placed on the stack
+- Volatility: Because it shifts constantly during calcaltions or nested calls, it is difficult to use for finding specific variables
+
 - %eax, %edx, $ecx
   - Caller saves prior to call if values are used later
 - %eax
@@ -374,6 +384,7 @@ void s_helper (int x, int *accum)
         s_helper (x-1, accum);
     }
 }
+```
 
 - Top-Level Call
 
@@ -387,3 +398,164 @@ int sfact(int x)
 ```
 
 - Pass pointer to update location
+
+**Creating & Initializing Pointer**
+
+```c
+int sfact(int x)
+{
+  int val = 1;
+  s_helper(x, &val);
+  return val;
+}
+```
+- Variable `val` must be stored on stack
+  - Because: Need to create pointer to it
+- Computer pointer as `-4(%ebp)`
+- Push on stack as second argument
+
+- Initial part of `sfact`
+
+```
+_sfact:
+  pushl %ebp            # Save %ebp
+  movl  %esp, %ebp      # Set %ebp
+  subl  $16, %esp       # Add 16 bytes
+  movl  8(%ebp), %edx   # edx = x
+  movl  $1, -4(%ebp)    # val = 1
+```
+
+![alt text](/images/s_fact.png)
+
+
+- Calling `s_helper` from sfact
+
+
+```
+leal  -4(%ebp), %eax  # Compute &val
+pushl %eax            # Push on stack
+pushl %edx            # Push x
+call s_helper         # call
+movl -4(%ebp), %eax   # Return val
+...                   # Finish
+```
+
+- Important points:
+  - IA32 procedures are a combination of instructions and conventions
+    - Conventions prevent functions from disrupting each other
+  - Stach is the right data structure for procedure call / return
+    - If P calls Q, the Q returns before P
+
+![alt text](/images/procedure_summary.png)
+
+- Recursion handled by normal calling conventions
+  - Can safely store values in local stack frame and in callee-saved registers
+  - Put function arguments at top of stack
+  - Result returned in `%eax`
+
+## x86-64 Procedure Calling Convetion
+
+- **Doubling of registers makes us less dependent on stack**
+  - Store argument in registers
+  - Store temporary variables in registers
+- What do we do if we have too many arguments or too many temporary variables?
+
+**x86-64 64-bit Registers: Usage Conventions**
+
+| 64-bit  | Usage Conventions |
+|:-------:|:------:|
+| %rax    | Return value   |
+| %rbx    | Callee saved   |
+| %rcx    | Argument#4   |
+| %rdx    | Argument#3   |
+| %rsi    | Argument#2   |
+| %rdi    | Argument#1   |
+| %rsp    | Stack Pointer   |
+| %rbp    | Callee saved   |
+| %r8     | Argument#5   |
+| %r9     | Argument#6   |
+| %r10    | Caller saved  |
+| %r11    | Caller saved  |
+| %r12    | Callee saved  |
+| %r13    | Callee saved  |
+| %r14    | Callee saved  |
+| %r15    | Callee saved  |
+
+![alt text](/images/x86_registers.png)
+
+
+```asm
+swap:
+  // Set Up
+  pushl %ebp
+  movl %esp, %ebp
+  pushl %ebx
+
+  // Body
+  movl 12(%ebp), %ecx
+  movl 8(%ebp), %edx
+  movl (%ecx), %eax
+  movl (%edx), %ebx
+  movl %eax, (%edx)
+  movl %ebx, (%ecx)
+
+  // Finish
+  movl -4(%ebp), %ebx
+  movl %ebp, %esp
+  popl %ebp
+  ret
+```
+
+
+```asm
+swap (64-bit long ints):
+  movq (%rdi), %rdx
+  movq (%rsi), %rax
+  movq %rax, (%rdi)
+  movq %rdx,(%rsi)
+  ret
+```
+
+- Arguments passed in registers
+  - First (xp) in `%rdi`, second (yp) in `%rsi`
+  - 64-bit pointers
+- No stack operations required (except ret)
+- Avoiding stack
+  - Call hold all local information in registers
+
+**X86-64 procedure call highlights**
+
+- Arguments (up to first 6) in registers
+  - Faster to get these values from registers than from stack in memory
+- Local variables also in registers (if there is room)
+- `callq` instruction stores 64-bit return address on stack
+  - Address pushed onto stack, decrementing `%rsp` by 8
+- No frame pointer
+  - All references to stack frame made relative to `%rsp`; eliminates need to update `%ebp/%rbp`, which is now avaible for general-purpose use
+- Functions can access memory up to 128 bytes beyond `%rps`: the "red zone"
+  - Can store some temps on stack without altering `%rsp`
+- Registers still designated "caller-saved" or "calle-saved"
+
+**x86-64 Stack Frames**
+
+- Often (idelly), x86-64 functions need no stack frame at all
+  - Just a return address is pushed onto the stack when a function call is made
+- A function does need a stack frame when it:
+  - Has too many local variables to hold in registers
+  - Has local variables that are arrays or structs
+  - Uses the address-of operator (&) to compute the address of a local variable
+  - Calls another function that takes more than six arguments
+  - Needs to save the state of callee-save registers before modifying them
+
+**x86-64 Procedure Summary**
+
+- Heavy use of registers (faster than using stack in memory)
+  - Parameter passing
+  - More temporaries since more registers
+- Minimal use of stack
+  - Sometimes none
+  - when needed, allocate/deallocate entire frame at once
+  - No more frame pointer: address relative to stack pointer
+- More room for compiler optimizations
+  - Prefer to store data in registers rather than memory
+  - Minimize modifications to stack pointer
