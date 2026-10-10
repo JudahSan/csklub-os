@@ -126,7 +126,7 @@ Machine Evolution
 ![Assembly Programmer's View of the system](/images/assembly_view.png)
 
 **Programmer-Visible State**
-  - PC: Program counter
+  - PC: [Program counter](https://en.wikipedia.org/wiki/Program_counter)
     - Address of next instruction
     - Called "EIP" in (IA32) or "RIP" in (x86-64)
   - Register file

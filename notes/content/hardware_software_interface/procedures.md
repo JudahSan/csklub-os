@@ -559,3 +559,11 @@ swap (64-bit long ints):
 - More room for compiler optimizations
   - Prefer to store data in registers rather than memory
   - Minimize modifications to stack pointer
+
+
+[**Stack Pointer**](https://www.youtube.com/watch?v=n8_2y5E8N4Y)
+- Stack: last in first out. reserved portion of memory for temporary storage of registers
+- Stack pointer: contains an address pointing to the stack
+  - Increment/ Decrement
+  - Pre-increment / Pre-decrement
+    - Post -> Stack Pointer (SP) points to the next location to store a register value
